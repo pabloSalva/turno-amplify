@@ -1,0 +1,50 @@
+type Unidad @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  patente: String
+  chasis: String
+  vin: String
+  descripcion: String
+  marca: String
+  modelo: String
+  modelo_codigo_fabrica: String
+  version: String
+  color: String
+  fecha_alta: AWSDateTime
+  fecha_patentamiento: AWSDate
+  fecha_vencimiento_garantia: AWSDate
+  tipo: String
+  clienteID: ID! @index(name: "byCliente")
+}
+
+type Cliente @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  descripcion: String
+  first_name: String
+  last_name: String
+  fecha_alta: AWSDateTime
+  fecha_ultimo_movimiento: AWSDateTime
+  email: String
+  telefono: AWSPhone
+  celular: AWSPhone
+  direccion: String
+  es_persona: Boolean
+  sexo: String
+  dni: Int
+  cuit: String
+  lugar_de_trabajo: String
+  ocupacion: String
+  fecha_nacimiento: AWSDate
+  horario_contacto: AWSTime
+  Unidads: [Unidad] @hasMany(indexName: "byCliente", fields: ["id"])
+}
+
+type Turn @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  fecha_turno: AWSDateTime
+  fecha_ingreso: AWSDateTime
+  fecha_salida: AWSDateTime
+  fecha_salida_estimada: AWSDateTime
+  descripcion: String
+  cliente: Cliente @hasOne
+  unidad: Unidad @hasOne
+}
